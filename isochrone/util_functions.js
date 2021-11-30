@@ -29,7 +29,7 @@ function createMarker(latlng) {
 function onLocationChanged(new_coord) {
     coord = new_coord;
     document.getElementById('latlng').value = `${coord.lat.toFixed(6)},${coord.lng.toFixed(6)}`;
-    getContours();
+    //getContours();
   }
 
 function onMapClick(e) {

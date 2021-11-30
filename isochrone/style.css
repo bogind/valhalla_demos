@@ -3,3 +3,7 @@ html, body, #map {
     width: 100vh;
     margin: 0;
  }
+ .control {
+     padding: 5px;
+     background-color: white;
+ }

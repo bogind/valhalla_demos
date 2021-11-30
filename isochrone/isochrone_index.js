@@ -5,30 +5,14 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
 
 var map = L.map('map',{
     layers: [OpenStreetMap_Mapnik]
-}).setView([51.505, -0.09], 13);
+}).setView([32.055572,34.756429], 13);
 
-const initLocation = {lat: 51.24912, lng: 0};
-let coord = {}
+const initLocation = {lat: 32.055572, lng: 34.756429};
+var coord = initLocation;
+var marker = createMarker(initLocation);
+map.addLayer(marker);
 
-L.Control.Watermark = L.Control.extend({
-    onAdd: function(map) {
-        var img = L.DomUtil.create('img');
 
-        img.src = '../../docs/images/logo.png';
-        img.style.width = '200px';
-
-        return img;
-    },
-
-    onRemove: function(map) {
-        // Nothing to do here
-    }
-});
-
-L.control.watermark = function(opts) {
-    return new L.Control.Watermark(opts);
-}
-
-L.control.watermark({ position: 'bottomleft' }).addTo(map);
+L.control.inputs({ position: 'topright' }).addTo(map);
 
 map.on('click', onMapClick);
