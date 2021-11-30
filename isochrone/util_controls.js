@@ -44,6 +44,29 @@ L.Control.Inputs = L.Control.extend({
 
         container.append(GeneralizeLabel,GeneralizeInput,GeneralizeTextInput,L.DomUtil.create('br'))
 
+        let DistanceLabel = L.DomUtil.create('label');
+        DistanceLabel.innerText = 'Distance'
+        DistanceLabel.for = "type_distance"
+
+        let DistanceInput = L.DomUtil.create('input');
+        DistanceInput.id = "type_distance"
+        DistanceInput.type = "radio";
+        DistanceInput.name = "type_select";
+        DistanceInput.value = "distance";
+        DistanceInput.checked = 1;
+
+        let TimeLabel = L.DomUtil.create('label');
+        TimeLabel.innerText = "Time";
+        TimeLabel.for = "type_time";
+
+        let TimeInput = L.DomUtil.create('input');
+        TimeInput.id = "type_time";
+        TimeInput.type = "radio";
+        TimeInput.name = "type_select";
+        TimeInput.value = "time";
+
+        container.append(DistanceLabel,DistanceInput,TimeLabel,TimeInput,L.DomUtil.create('br'))
+
         
 
         return container;
