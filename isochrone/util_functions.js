@@ -36,6 +36,7 @@ function onMapClick(e) {
     const new_coord = e.latlng;
     marker.setLatLng(new_coord, {draggable: 'true'});
     onLocationChanged(new_coord);
+    reverseGeocode(new_coord,"esri")
   }
 
 function getContours(){
@@ -47,4 +48,17 @@ function getContours(){
     json['generalize'] = document.getElementById('generalize').value;
     json['contours'] =  parseContour(document.getElementById('contours').value);
     json['polygons'] = document.getElementById('polygons_lines').value === 'polygons';
+}
+
+function reverseGeocode(coord, provider){
+  if(provider === "esri"){
+    let esriUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&location=${coord.lng},${coord.lat}`
+    fetch(esriUrl)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data.address.Match_addr)
+    })
+  }else if(provider === "gsheets"){
+    //TODO
+  }
 }
