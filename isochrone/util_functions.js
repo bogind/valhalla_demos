@@ -84,6 +84,10 @@ function getContours(){
 
       //render the geojson
       geojson.addTo(map);
+
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+      var dlAnchorElem = document.getElementById('downloadAnchorElem');
+      dlAnchorElem.setAttribute("href",     dataStr     );
           
     })
 }
