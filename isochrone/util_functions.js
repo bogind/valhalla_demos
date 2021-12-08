@@ -56,7 +56,7 @@ function getContours(){
     json['costing'] = document.querySelector('button[name="costing"].active').value;
     //json['denoise'] = document.getElementById('denoise').value;
     json['generalize'] = document.getElementById('generalize').value;
-    json['polygons'] = document.getElementById('polygons_lines').value =="on";
+    json['polygons'] = document.getElementById('polygons_lines').checked;
     url += escape(JSON.stringify(json));
     fetch(url)
     .then(res => res.json())

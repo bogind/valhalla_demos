@@ -235,6 +235,7 @@ function switchContour() {
         document.getElementById("distance").disabled = 1
         document.getElementById("minutes").disabled = 0
     }
+    getContours()
   }
 
 function switchCosting(){
@@ -249,6 +250,7 @@ function switchCosting(){
         x.classList.remove('active')
     })
     document.querySelector(`button[value=${value}]`).classList.add('active');
+    getContours()
 
 }
 
