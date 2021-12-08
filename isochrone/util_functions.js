@@ -43,9 +43,11 @@ function getContours(){
     var url = 'https://valhalla1.openstreetmap.de/isochrone?json=';
     let type = document.querySelector('input[name="type_select"]:checked').value;
     var json = {'contours':{}}
+    var tooltipInner = document.querySelector('select[id="distance"]').options[document.querySelector('select[id="distance"]').selectedIndex].innerText
 
     if(type === "distance"){
       json['contours'] = [{ "distance" : Number(document.querySelector('select[id="distance"]').value)}]
+
     }else{
       json['contours'] = [ {"time" : Number(document.querySelector('select[id="minutes"]').value)}]
     }
@@ -76,7 +78,7 @@ function getContours(){
                  };
         },
         onEachFeature: function(feature, layer) {
-          var tooltip = layer.bindTooltip(feature.properties.contour + ' min', { sticky: true });
+          var tooltip = layer.bindTooltip(tooltipInner, { sticky: true })//feature.properties.contour + ' min', { sticky: true });
           tooltips.push(tooltip);
           tooltip.addTo(map);
         }
