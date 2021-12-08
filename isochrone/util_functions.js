@@ -100,7 +100,7 @@ function reverseGeocode(coord, provider){
     fetch(esriUrl)
     .then(res => res.json())
     .then(data => {
-      console.log(data.address.Match_addr)
+      return data.address.Match_addr
     })
   }else if(provider === "gsheets"){
     //TODO
