@@ -199,7 +199,7 @@ L.Control.Inputs = L.Control.extend({
         container.append(PolygonsLinesLabel,PolygonsLines,L.DomUtil.create('br'),L.DomUtil.create('br'))
 
         let downloadButton = L.DomUtil.create('a');
-        downloadButton.innerHTML = `<i class="fg-layer-download fg-2x" style="color:#2140ba;"> </i>`
+        downloadButton.innerHTML = `<i class="fg-layer-download fg-lg" style="color:#2140ba;"> </i>`
         downloadButton.id = "downloadAnchorElem";
         
         downloadButton.setAttribute("download", "isochrone.geojson");
