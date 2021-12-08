@@ -9,9 +9,11 @@ var map = L.map('map',{
 
 const initLocation = {lat: 32.055572, lng: 34.756429};
 var coord = initLocation;
+var geojson = null;
+var tooltips = [];
 var marker = createMarker(initLocation);
 map.addLayer(marker);
-
+marker.on('dragend',getContours)
 
 L.control.inputs({ position: 'topright' }).addTo(map);
 

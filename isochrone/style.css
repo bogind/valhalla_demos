@@ -1,9 +1,44 @@
-html, body, #map { 
+html, body { 
     height: 100vh;
     width: 100vh;
     margin: 0;
  }
+ #map{
+     position: absolute;
+     width: 100%;
+     height: 100%;
+ }
  .control {
      padding: 5px;
      background-color: white;
+ }
+ .costing-button{
+     background-color: #c1cdd8;
+     border-radius: 6px;
+     margin-left: 3px;
+     border: 2px solid #3b3e42;
+     font-size: 16px;
+     margin: 4px 2px;
+     cursor: pointer;
+     padding: 2px 4px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+ }
+ .costing-button i{
+     color: #8d969f
+ }
+ .active{
+     background-color: #9943f5;
+     color: white;
+     border: 2px solid #8d969f;
+ }
+ .active i{
+     color: white;
+ }
+ #go{
+     position: relative;
+     left: 45%;
+     width: 10%;
+     margin: 4px;
  }

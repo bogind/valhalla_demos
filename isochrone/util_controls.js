@@ -13,8 +13,11 @@ L.Control.Inputs = L.Control.extend({
         latlngInput.value = "32.055572, 34.756429";
         latlngInput.size = "20";
 
-        container.append(latlngLabel,latlngInput,L.DomUtil.create('br'));
+        container.append(latlngLabel,latlngInput,L.DomUtil.create('br'),L.DomUtil.create('br'));
 
+        //#########################
+        // range
+        //#########################
         
         let GeneralizeLabel = L.DomUtil.create('label');
         GeneralizeLabel.innerText = 'Generalize: ';
@@ -42,7 +45,11 @@ L.Control.Inputs = L.Control.extend({
         }
 
 
-        container.append(GeneralizeLabel,GeneralizeInput,GeneralizeTextInput,L.DomUtil.create('br'))
+        container.append(GeneralizeLabel,GeneralizeInput,GeneralizeTextInput,L.DomUtil.create('br'),L.DomUtil.create('br'))
+
+        //#########################
+        // radio type select
+        //#########################
 
         let DistanceLabel = L.DomUtil.create('label');
         DistanceLabel.innerText = 'Distance'
@@ -54,18 +61,24 @@ L.Control.Inputs = L.Control.extend({
         DistanceTypeInput.name = "type_select";
         DistanceTypeInput.value = "distance";
         DistanceTypeInput.checked = 1;
+        DistanceTypeInput.onchange = switchContour
 
         let TimeLabel = L.DomUtil.create('label');
         TimeLabel.innerText = "Time";
         TimeLabel.for = "type_time";
 
-        let TimeInput = L.DomUtil.create('input');
-        TimeInput.id = "type_time";
-        TimeInput.type = "radio";
-        TimeInput.name = "type_select";
-        TimeInput.value = "time";
+        let TimeTypeInput = L.DomUtil.create('input');
+        TimeTypeInput.id = "type_time";
+        TimeTypeInput.type = "radio";
+        TimeTypeInput.name = "type_select";
+        TimeTypeInput.value = "time";
+        TimeTypeInput.onchange = switchContour
 
-        container.append(DistanceLabel,DistanceTypeInput,TimeLabel,TimeInput,L.DomUtil.create('br'))
+        container.append(DistanceLabel,DistanceTypeInput,TimeLabel,TimeTypeInput,L.DomUtil.create('br'),L.DomUtil.create('br'))
+
+        //#########################
+        // selects
+        //#########################
 
         let DistanceInputLabel = L.DomUtil.create('label');
         DistanceInputLabel.innerText = 'Distance: '
@@ -112,7 +125,7 @@ L.Control.Inputs = L.Control.extend({
 
         DistanceSelect.append(distance100meters,distance250meters,distance500meters,distance1kilometers,distance15kilometers,distance2kilometers,distance3kilometers,distance4kilometers,distance5kilometers)
 
-        container.append(DistanceInputLabel,DistanceSelect,L.DomUtil.create('br'));
+        container.append(DistanceInputLabel,DistanceSelect,L.DomUtil.create('br'),L.DomUtil.create('br'));
 
 
         let TimeInputLabel = L.DomUtil.create('label');
@@ -121,6 +134,7 @@ L.Control.Inputs = L.Control.extend({
 
         let TimeSelect = L.DomUtil.create('select');
         TimeSelect.id = "minutes";
+        TimeSelect.disabled = 1;
 
         let time10minutes = L.DomUtil.create('option');
         time10minutes.value = "10";
@@ -136,14 +150,63 @@ L.Control.Inputs = L.Control.extend({
 
         TimeSelect.append(time10minutes,time20minutes,time30minutes)
 
-        container.append(TimeInputLabel,TimeSelect,L.DomUtil.create('br'));
+        container.append(TimeInputLabel,TimeSelect,L.DomUtil.create('br'),L.DomUtil.create('br'));
 
 
+        //#########################
+        // costing
+        //#########################
 
+        let CostingInputLabel = L.DomUtil.create('label');
+        CostingInputLabel.innerText = 'Costing: '
+        CostingInputLabel.for = "costing"
 
+        let CostingPedestrian = L.DomUtil.create('button');
+        CostingPedestrian.className = "costing-button active";
+        CostingPedestrian.name = "costing"
+        CostingPedestrian.id = "costing-pedestrian"
+        CostingPedestrian.value = "pedestrian"
+        CostingPedestrian.innerHTML = '<i class="fg-pedestrian fg-lg""></i>'
+        CostingPedestrian.onclick = switchCosting
+
+        let CostingBicycle = L.DomUtil.create('button');
+        CostingBicycle.className = "costing-button";
+        CostingBicycle.name = "costing"
+        CostingBicycle.id = "costing-bicycle"
+        CostingBicycle.value = "bicycle"
+        CostingBicycle.innerHTML = '<i class="fg-bicycle fg-lg""></i>'
+        CostingBicycle.onclick = switchCosting
         
+        let CostingAuto = L.DomUtil.create('button');
+        CostingAuto.className = "costing-button";
+        CostingAuto.name = "costing"
+        CostingAuto.id = "costing-bicycle"
+        CostingAuto.value = "auto"
+        CostingAuto.innerHTML = '<i class="fg-car fg-lg""></i>'
+        CostingAuto.onclick = switchCosting
 
-        
+        container.append(CostingPedestrian,CostingBicycle,CostingAuto,L.DomUtil.create('br'),L.DomUtil.create('br'))
+
+        let PolygonsLinesLabel = L.DomUtil.create('label');
+        PolygonsLinesLabel.innerText = 'Polygons? ';
+        PolygonsLinesLabel.for = "polygons_lines";
+
+        let PolygonsLines = L.DomUtil.create('input');
+        PolygonsLines.type = "checkbox";
+        PolygonsLines.id = "polygons_lines";
+        PolygonsLines.checked = 1;
+
+        container.append(PolygonsLinesLabel,PolygonsLines,L.DomUtil.create('br'),L.DomUtil.create('br'))
+
+
+        let GoButton = L.DomUtil.create('button');
+        GoButton.id = "go"
+        GoButton.innerText = "Go"
+        GoButton.onclick = getContours
+
+
+        container.append(GoButton)
+
 
         return container;
     },
@@ -152,6 +215,33 @@ L.Control.Inputs = L.Control.extend({
         // Nothing to do here
     }
 });
+
+function switchContour() {
+    
+    let type = document.querySelector('input[name="type_select"]:checked').value;
+    if(type === "distance"){
+        document.getElementById("minutes").disabled = 1
+        document.getElementById("distance").disabled = 0
+    }else{
+        document.getElementById("distance").disabled = 1
+        document.getElementById("minutes").disabled = 0
+    }
+  }
+
+function switchCosting(){
+    
+    if(event.target.value){
+        value = event.target.value
+    }else{
+        value = event.target.parentElement.value
+    }
+    let buttons = document.getElementsByName("costing")
+    buttons.forEach(x => {
+        x.classList.remove('active')
+    })
+    document.querySelector(`button[value=${value}]`).classList.add('active');
+
+}
 
 L.control.inputs = function(opts) {
     return new L.Control.Inputs(opts);

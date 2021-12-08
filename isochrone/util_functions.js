@@ -41,13 +41,51 @@ function onMapClick(e) {
 
 function getContours(){
     var url = 'https://valhalla1.openstreetmap.de/isochrone?json=';
-    var json = {}
+    let type = document.querySelector('input[name="type_select"]:checked').value;
+    var json = {'contours':{}}
+
+    if(type === "distance"){
+      json['contours'] = [{ "distance" : Number(document.querySelector('select[id="distance"]').value)}]
+    }else{
+      json['contours'] = [ {"time" : Number(document.querySelector('select[id="minutes"]').value)}]
+    }
+    
     json['locations'] = [{"lat":coord.lat, "lon":coord.lng}];
-    json['costing'] = document.getElementById('costing').value;
-    json['denoise'] = document.getElementById('denoise').value;
+    json['costing'] = document.querySelector('button[name="costing"].active').value;
+    //json['denoise'] = document.getElementById('denoise').value;
     json['generalize'] = document.getElementById('generalize').value;
-    json['contours'] =  parseContour(document.getElementById('contours').value);
-    json['polygons'] = document.getElementById('polygons_lines').value === 'polygons';
+    json['polygons'] = document.getElementById('polygons_lines').value =="on";
+    url += escape(JSON.stringify(json));
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      if(geojson != null){
+        geojson.removeFrom(map);
+      }
+      //clear the tooltips
+      tooltips.forEach(function (tooltip) {
+        tooltip.removeFrom(map);
+      });
+      tooltips = [];
+      //create the geojson object
+      geojson = L.geoJson(data, {
+        style: function(feature) { 
+          return { opacity: feature.properties.opacity * 2,
+                   color: feature.properties.color
+                 };
+        },
+        onEachFeature: function(feature, layer) {
+          var tooltip = layer.bindTooltip(feature.properties.contour + ' min', { sticky: true });
+          tooltips.push(tooltip);
+          tooltip.addTo(map);
+        }
+      });
+
+      //render the geojson
+      geojson.addTo(map);
+          
+    })
 }
 
 function reverseGeocode(coord, provider){
